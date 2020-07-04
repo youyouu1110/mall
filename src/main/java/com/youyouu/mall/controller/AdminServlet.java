@@ -4,6 +4,10 @@ import com.google.gson.Gson;
 import com.youyouu.mall.model.Result;
 import com.youyouu.mall.model.bean.Admin;
 import com.youyouu.mall.model.bo.AdminLoginBO;
+<<<<<<< HEAD
+=======
+import com.youyouu.mall.model.bo.AdminSearchBO;
+>>>>>>> temp-branch
 import com.youyouu.mall.service.AdminService;
 import com.youyouu.mall.service.impl.AdminServiceImpl;
 import com.youyouu.mall.model.vo.AdminLoginVO;
@@ -31,6 +35,12 @@ public class AdminServlet extends HttpServlet {
         if("login".equals(action)){
             login(request,response);
         }
+<<<<<<< HEAD
+=======
+        if("getSearchAdmins".equals(action)){
+            getSearchAdmins(request,response);
+        }
+>>>>>>> temp-branch
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,4 +75,15 @@ public class AdminServlet extends HttpServlet {
         response.getWriter().println(gson.toJson(Result.ok(0,adminList)));
     }
 
+<<<<<<< HEAD
+=======
+    //根据email和nickname模糊查询管理员
+    private void getSearchAdmins(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestBody = HttpUtils.getRequestBody(request);
+        AdminSearchBO searchBO = gson.fromJson(requestBody, AdminSearchBO.class);
+        List<Admin> adminList = adminService.getSearchAdmins(searchBO);
+        response.getWriter().println(gson.toJson(Result.ok(adminList)));
+    }
+
+>>>>>>> temp-branch
 }

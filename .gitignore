@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /target/
 /.idea/
 =======
+=======
+>>>>>>> temp-branch
 # Compiled class file
 *.class
 
@@ -25,4 +28,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+<<<<<<< HEAD
 >>>>>>> 54e9148a7e6a049b0095b2b59440d1bdf77b4380
+=======
+=======
+/target/
+/.idea/
+>>>>>>> day1
+>>>>>>> temp-branch

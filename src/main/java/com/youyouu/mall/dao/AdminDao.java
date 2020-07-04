@@ -8,4 +8,9 @@ public interface AdminDao {
     Admin login(Admin admin);
 
     List<Admin> allAdmins();
+<<<<<<< HEAD
+=======
+
+    List<Admin> getSearchAdmins(Admin admin);
+>>>>>>> temp-branch
 }
