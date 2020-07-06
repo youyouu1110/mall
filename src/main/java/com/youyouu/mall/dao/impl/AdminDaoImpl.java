@@ -1,25 +1,21 @@
 package com.youyouu.mall.dao.impl;
 
-<<<<<<< HEAD
-=======
+
 import com.alibaba.druid.util.StringUtils;
->>>>>>> temp-branch
+
 import com.youyouu.mall.dao.AdminDao;
 import com.youyouu.mall.model.bean.Admin;
 import com.youyouu.mall.utils.DruidUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-
 import java.sql.SQLException;
-<<<<<<< HEAD
 import java.util.List;
-=======
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
->>>>>>> temp-branch
+
 
 public class AdminDaoImpl implements AdminDao {
 
@@ -47,8 +43,6 @@ public class AdminDaoImpl implements AdminDao {
         }
         return adminList;
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public List<Admin> getSearchAdmins(Admin admin) {
@@ -80,5 +74,4 @@ public class AdminDaoImpl implements AdminDao {
         map.put("params",params);
         return map;
     }
->>>>>>> temp-branch
 }

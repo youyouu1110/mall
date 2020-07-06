@@ -1,9 +1,3 @@
-/**
- * User: zsquirrel
- * Date: 2020/4/21
- * Time: 10:01 上午
- *//*
-
 package com.youyouu.mall.utils;
 
 import org.apache.commons.fileupload.FileItem;
@@ -53,14 +47,6 @@ public class FileUploadUtils {
         return resultMap;
     }
 
-    */
-/**
-     * 处理上传的文件业务逻辑
-     * @param item
-     * @param request
-     * @param map
-     *//*
-
     private static void processUploadedFile(FileItem item, HttpServletRequest request, Map<String, Object> map) {
         //就是form表单的input name
         String fieldName = item.getFieldName();
@@ -95,13 +81,6 @@ public class FileUploadUtils {
         map.put(fieldName, basePath);
     }
 
-    */
-/**
-     * 处理form表单数据的具体业务逻辑
-     * @param item
-     * @param map
-     *//*
-
     private static void processFormField(FileItem item, Map<String, Object> map) {
         String fieldName = item.getFieldName();
         String value = null;
@@ -114,4 +93,3 @@ public class FileUploadUtils {
         System.out.println(fieldName + " = " + value);
     }
 }
-*/

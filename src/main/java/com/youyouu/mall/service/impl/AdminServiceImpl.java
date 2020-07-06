@@ -4,12 +4,8 @@ import com.youyouu.mall.dao.AdminDao;
 import com.youyouu.mall.dao.impl.AdminDaoImpl;
 import com.youyouu.mall.model.bean.Admin;
 import com.youyouu.mall.model.bo.AdminLoginBO;
-<<<<<<< HEAD
-=======
 import com.youyouu.mall.model.bo.AdminSearchBO;
->>>>>>> temp-branch
 import com.youyouu.mall.service.AdminService;
-
 import java.util.List;
 
 public class AdminServiceImpl implements AdminService {
@@ -28,8 +24,6 @@ public class AdminServiceImpl implements AdminService {
     public List<Admin> allAdmins() {
         return adminDao.allAdmins();
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public List<Admin> getSearchAdmins(AdminSearchBO searchBO) {
@@ -38,5 +32,4 @@ public class AdminServiceImpl implements AdminService {
         admin.setNickname(searchBO.getNickname());
         return adminDao.getSearchAdmins(admin);
     }
->>>>>>> temp-branch
 }

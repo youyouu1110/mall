@@ -4,10 +4,9 @@ import com.google.gson.Gson;
 import com.youyouu.mall.model.Result;
 import com.youyouu.mall.model.bean.Admin;
 import com.youyouu.mall.model.bo.AdminLoginBO;
-<<<<<<< HEAD
-=======
+
 import com.youyouu.mall.model.bo.AdminSearchBO;
->>>>>>> temp-branch
+
 import com.youyouu.mall.service.AdminService;
 import com.youyouu.mall.service.impl.AdminServiceImpl;
 import com.youyouu.mall.model.vo.AdminLoginVO;
@@ -35,12 +34,9 @@ public class AdminServlet extends HttpServlet {
         if("login".equals(action)){
             login(request,response);
         }
-<<<<<<< HEAD
-=======
         if("getSearchAdmins".equals(action)){
             getSearchAdmins(request,response);
         }
->>>>>>> temp-branch
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -63,7 +59,7 @@ public class AdminServlet extends HttpServlet {
             loginVO.setName(login.getNickname());
             response.getWriter().println(gson.toJson(Result.ok(loginVO)));
         }else{
-            response.getWriter().println(Result.error("用户名或密码错误"));
+            response.getWriter().println(gson.toJson(Result.error("用户名或密码错误")));
         }
 
     }
@@ -75,8 +71,7 @@ public class AdminServlet extends HttpServlet {
         response.getWriter().println(gson.toJson(Result.ok(0,adminList)));
     }
 
-<<<<<<< HEAD
-=======
+
     //根据email和nickname模糊查询管理员
     private void getSearchAdmins(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestBody = HttpUtils.getRequestBody(request);
@@ -85,5 +80,4 @@ public class AdminServlet extends HttpServlet {
         response.getWriter().println(gson.toJson(Result.ok(adminList)));
     }
 
->>>>>>> temp-branch
 }
