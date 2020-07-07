@@ -4,9 +4,9 @@ import com.youyouu.mall.dao.GoodsDao;
 import com.youyouu.mall.model.bean.Goods;
 import com.youyouu.mall.model.bean.Spec;
 import com.youyouu.mall.model.bean.Type;
-import com.youyouu.mall.model.bo.DeleteSpecBO;
-import com.youyouu.mall.model.bo.UpdateSpecBO;
-import com.youyouu.mall.model.vo.GoodsVO;
+import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
+import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
+import com.youyouu.mall.model.vo.goods.GoodsVO;
 import com.youyouu.mall.utils.DruidUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -16,7 +16,6 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 
 public class GoodsDaoImpl implements GoodsDao {
 

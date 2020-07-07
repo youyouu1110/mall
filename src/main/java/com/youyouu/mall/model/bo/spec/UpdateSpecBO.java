@@ -1,10 +1,19 @@
-package com.youyouu.mall.model.bo;
+package com.youyouu.mall.model.bo.spec;
 
-public class AddSpecBO {
+public class UpdateSpecBO {
+    private Integer id;
     private Integer goodsId;
     private String specName;
     private Integer stockNum;
     private double unitPrice;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getGoodsId() {
         return goodsId;
@@ -35,6 +44,17 @@ public class AddSpecBO {
     }
 
     public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public UpdateSpecBO() {
+    }
+
+    public UpdateSpecBO(Integer id, Integer goodsId, String specName, Integer stockNum, double unitPrice) {
+        this.id = id;
+        this.goodsId = goodsId;
+        this.specName = specName;
+        this.stockNum = stockNum;
         this.unitPrice = unitPrice;
     }
 }

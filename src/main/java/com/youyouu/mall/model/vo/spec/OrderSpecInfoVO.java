@@ -1,9 +1,8 @@
-package com.youyouu.mall.model.vo;
+package com.youyouu.mall.model.vo.spec;
 
-public class SpecInfoVO {
+public class OrderSpecInfoVO {
     private Integer id;
     private String specName;
-    private Integer stockNum;
     private double unitPrice;
 
     public Integer getId() {
@@ -22,14 +21,6 @@ public class SpecInfoVO {
         this.specName = specName;
     }
 
-    public Integer getStockNum() {
-        return stockNum;
-    }
-
-    public void setStockNum(Integer stockNum) {
-        this.stockNum = stockNum;
-    }
-
     public double getUnitPrice() {
         return unitPrice;
     }
@@ -38,13 +29,14 @@ public class SpecInfoVO {
         this.unitPrice = unitPrice;
     }
 
-    public SpecInfoVO() {
+    public OrderSpecInfoVO() {
     }
 
-    public SpecInfoVO(Integer id, String specName, Integer stockNum, double unitPrice) {
+    public OrderSpecInfoVO(Integer id, String specName) {
         this.id = id;
         this.specName = specName;
-        this.stockNum = stockNum;
-        this.unitPrice = unitPrice;
+        this.unitPrice = 0.0;
     }
+
+
 }

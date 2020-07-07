@@ -1,13 +1,24 @@
-package com.youyouu.mall.model.bo;
+package com.youyouu.mall.model.bo.goods;
+
+import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
 
 import java.util.List;
 
-public class GoodsBO {
+public class UpdateGoodsBO {
+    private Integer id;
     private String name;
     private Integer typeId;
     private String img;
     private String desc;
-    private List<SpecBO> specList;
+    private List<UpdateSpecBO> specList;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -41,18 +52,19 @@ public class GoodsBO {
         this.desc = desc;
     }
 
-    public List<SpecBO> getSpecList() {
+    public List<UpdateSpecBO> getSpecList() {
         return specList;
     }
 
-    public void setSpecBOList(List<SpecBO> specBOList) {
-        this.specList = specBOList;
+    public void setSpecList(List<UpdateSpecBO> specList) {
+        this.specList = specList;
     }
 
-    public GoodsBO() {
+    public UpdateGoodsBO() {
     }
 
-    public GoodsBO(String name, Integer typeId, String img, String desc, List<SpecBO> specList) {
+    public UpdateGoodsBO(Integer id, String name, Integer typeId, String img, String desc, List<UpdateSpecBO> specList) {
+        this.id = id;
         this.name = name;
         this.typeId = typeId;
         this.img = img;

@@ -1,4 +1,4 @@
-package com.youyouu.mall.model.bo;
+package com.youyouu.mall.model.bo.type;
 
 public class TypeBO {
     private String name;

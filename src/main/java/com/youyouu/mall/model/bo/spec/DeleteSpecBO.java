@@ -1,4 +1,4 @@
-package com.youyouu.mall.model.bo;
+package com.youyouu.mall.model.bo.spec;
 
 public class DeleteSpecBO {
     private Integer goodsId;

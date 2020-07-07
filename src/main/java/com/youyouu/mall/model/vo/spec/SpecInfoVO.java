@@ -1,10 +1,18 @@
-package com.youyouu.mall.model.bo;
+package com.youyouu.mall.model.vo.spec;
 
-public class SpecBO {
-
+public class SpecInfoVO {
+    private Integer id;
     private String specName;
     private Integer stockNum;
     private double unitPrice;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getSpecName() {
         return specName;
@@ -30,10 +38,11 @@ public class SpecBO {
         this.unitPrice = unitPrice;
     }
 
-    public SpecBO() {
+    public SpecInfoVO() {
     }
 
-    public SpecBO(String specName, Integer stockNum, double unitPrice) {
+    public SpecInfoVO(Integer id, String specName, Integer stockNum, double unitPrice) {
+        this.id = id;
         this.specName = specName;
         this.stockNum = stockNum;
         this.unitPrice = unitPrice;

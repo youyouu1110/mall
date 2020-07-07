@@ -3,22 +3,21 @@ package com.youyouu.mall.controller;
 import com.google.gson.Gson;
 import com.youyouu.mall.model.Result;
 import com.youyouu.mall.model.bean.Admin;
-import com.youyouu.mall.model.bo.AdminLoginBO;
+import com.youyouu.mall.model.bo.admin.AdminBO;
+import com.youyouu.mall.model.bo.admin.AdminLoginBO;
 
-import com.youyouu.mall.model.bo.AdminSearchBO;
+import com.youyouu.mall.model.bo.admin.AdminSearchBO;
 
 import com.youyouu.mall.service.AdminService;
 import com.youyouu.mall.service.impl.AdminServiceImpl;
-import com.youyouu.mall.model.vo.AdminLoginVO;
+import com.youyouu.mall.model.vo.admin.AdminLoginVO;
 import com.youyouu.mall.utils.HttpUtils;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,9 +32,12 @@ public class AdminServlet extends HttpServlet {
         String action = requestURI.replace("/api/admin/admin/", "");
         if("login".equals(action)){
             login(request,response);
-        }
-        if("getSearchAdmins".equals(action)){
+        }else if("getSearchAdmins".equals(action)){
             getSearchAdmins(request,response);
+        }else if("updateAdminss".equals(action)){
+            updateAdmin(request,response);
+        }else if("changePwd".equals(action)){
+            changePwd(request,response);
         }
     }
 
@@ -44,6 +46,10 @@ public class AdminServlet extends HttpServlet {
         String action = requestURI.replace("/api/admin/admin/", "");
         if("allAdmins".equals(action)){
             allAdmins(request,response);
+        }else if("deleteAdmins".equals(action)){
+            deleteAdmins(request,response);
+        }else if("getAdminsInfo".equals(action)){
+            getAdminsInfo(request,response);
         }
     }
 
@@ -78,6 +84,41 @@ public class AdminServlet extends HttpServlet {
         AdminSearchBO searchBO = gson.fromJson(requestBody, AdminSearchBO.class);
         List<Admin> adminList = adminService.getSearchAdmins(searchBO);
         response.getWriter().println(gson.toJson(Result.ok(adminList)));
+    }
+
+    private void deleteAdmins(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = request.getParameter("id");
+        adminService.deleteAdminsById(id);
+        response.getWriter().println(gson.toJson(Result.ok()));
+    }
+
+    private void getAdminsInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = request.getParameter("id");
+        Admin admin = adminService.getAdminsInfoById(id);
+        response.getWriter().println(gson.toJson(Result.ok(admin)));
+    }
+
+    private void updateAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestBody = HttpUtils.getRequestBody(request);
+        Admin admin = gson.fromJson(requestBody, Admin.class);
+        adminService.updateAdmin(admin);
+        response.getWriter().println(gson.toJson(Result.ok()));
+    }
+
+    private void changePwd(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestBody = HttpUtils.getRequestBody(request);
+        AdminBO adminBO = gson.fromJson(requestBody, AdminBO.class);
+        String oldPwd = adminService.checkPwd(adminBO);
+        if(!oldPwd.equals(adminBO.getOldPwd())){
+            response.getWriter().println(gson.toJson(Result.error("旧密码错误!")));
+            return;
+        }
+        if(!adminBO.getNewPwd().equals(adminBO.getConfirmPwd())){
+            response.getWriter().println(gson.toJson(Result.error("两次密码输入不一致!")));
+            return;
+        }
+        adminService.changePwd(adminBO);
+        response.getWriter().println(gson.toJson(Result.ok()));
     }
 
 }

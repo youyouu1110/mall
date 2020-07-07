@@ -1,4 +1,4 @@
-package com.youyouu.mall.model.vo;
+package com.youyouu.mall.model.vo.goods;
 
 public class GoodsVO {
     private Integer id;

@@ -5,6 +5,7 @@ import com.alibaba.druid.util.StringUtils;
 
 import com.youyouu.mall.dao.AdminDao;
 import com.youyouu.mall.model.bean.Admin;
+import com.youyouu.mall.model.bo.admin.AdminBO;
 import com.youyouu.mall.utils.DruidUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -58,6 +59,36 @@ public class AdminDaoImpl implements AdminDao {
         return admins;
     }
 
+    @Override
+    public void deleteAdminById(String id) {
+        try {
+            queryRunner.update("delete from admin where id = ?",id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Admin getAdminsInfoById(String id) {
+        Admin admin = null;
+        try {
+            admin = queryRunner.query("select * from admin where id = ?", new BeanHandler<Admin>(Admin.class), id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return admin;
+    }
+
+    @Override
+    public void updateAdmin(Admin admin) {
+        try {
+            queryRunner.update("update admin set nickname = ?,email = ?,pwd = ? where id = ?",
+                    admin.getNickname(),admin.getEmail(),admin.getPwd(),admin.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Map<String, Object> getDynamicSql(Admin admin) {
         String sqlBase = "select * from admin where 1 = 1";
         Map<String,Object> map = new HashMap<>();
@@ -73,5 +104,26 @@ public class AdminDaoImpl implements AdminDao {
         map.put("sql",sqlBase);
         map.put("params",params);
         return map;
+    }
+
+    @Override
+    public String checkPwd(AdminBO adminBO) {
+        Admin admin = null;
+        try {
+            admin = queryRunner.query("select pwd from admin where nickname = ?", new BeanHandler<Admin>(Admin.class), adminBO.getAdminToken());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return admin.getPwd();
+    }
+
+    @Override
+    public void changePwd(AdminBO adminBO) {
+        try {
+            queryRunner.update("update admin set pwd = ? where nickname = ?",adminBO.getNewPwd(),adminBO.getAdminToken());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

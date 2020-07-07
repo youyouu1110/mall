@@ -1,4 +1,4 @@
-package com.youyouu.mall.model.vo;
+package com.youyouu.mall.model.vo.admin;
 
 public class AdminLoginVO {
     private String token;

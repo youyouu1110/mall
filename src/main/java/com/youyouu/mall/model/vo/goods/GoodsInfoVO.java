@@ -1,4 +1,6 @@
-package com.youyouu.mall.model.vo;
+package com.youyouu.mall.model.vo.goods;
+
+import com.youyouu.mall.model.vo.spec.SpecInfoVO;
 
 import java.util.List;
 

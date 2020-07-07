@@ -4,9 +4,9 @@ package com.youyouu.mall.dao;
 import com.youyouu.mall.model.bean.Goods;
 import com.youyouu.mall.model.bean.Spec;
 import com.youyouu.mall.model.bean.Type;
-import com.youyouu.mall.model.bo.DeleteSpecBO;
-import com.youyouu.mall.model.bo.UpdateSpecBO;
-import com.youyouu.mall.model.vo.GoodsVO;
+import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
+import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
+import com.youyouu.mall.model.vo.goods.GoodsVO;
 
 import java.util.List;
 

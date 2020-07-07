@@ -4,10 +4,14 @@ package com.youyouu.mall.service;
 import com.youyouu.mall.model.bean.Goods;
 import com.youyouu.mall.model.bean.Spec;
 import com.youyouu.mall.model.bean.Type;
-import com.youyouu.mall.model.bo.*;
-import com.youyouu.mall.model.vo.GoodsVO;
-import com.youyouu.mall.model.vo.GoodsSearchVO;
-import com.youyouu.mall.model.vo.SpecInfoVO;
+import com.youyouu.mall.model.bo.goods.GoodsBO;
+import com.youyouu.mall.model.bo.spec.AddSpecBO;
+import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
+import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
+import com.youyouu.mall.model.bo.type.TypeBO;
+import com.youyouu.mall.model.vo.goods.GoodsVO;
+import com.youyouu.mall.model.vo.goods.GoodsSearchVO;
+import com.youyouu.mall.model.vo.spec.SpecInfoVO;
 
 import java.util.List;
 

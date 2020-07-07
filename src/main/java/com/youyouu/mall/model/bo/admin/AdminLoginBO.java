@@ -1,4 +1,4 @@
-package com.youyouu.mall.model.bo;
+package com.youyouu.mall.model.bo.admin;
 
 public class AdminLoginBO {
     /*
