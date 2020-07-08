@@ -1,4 +1,4 @@
-package com.youyouu.mall.controller;
+package com.youyouu.mall.controller.admin;
 
 import com.google.gson.Gson;
 import com.youyouu.mall.model.Result;
@@ -11,9 +11,7 @@ import com.youyouu.mall.model.bo.spec.AddSpecBO;
 import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
 import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
 import com.youyouu.mall.model.bo.type.TypeBO;
-import com.youyouu.mall.model.vo.goods.GoodsInfoVO;
-import com.youyouu.mall.model.vo.goods.GoodsVO;
-import com.youyouu.mall.model.vo.goods.GoodsSearchVO;
+import com.youyouu.mall.model.vo.goods.*;
 import com.youyouu.mall.model.vo.spec.SpecInfoVO;
 import com.youyouu.mall.service.GoodsService;
 import com.youyouu.mall.service.impl.GoodsServiceImpl;
@@ -50,6 +48,8 @@ public class GoodsServlet extends HttpServlet {
             addSpec(request,response);
         }else if("updateGoods".equals(action)){
             updateGoods(request,response);
+        }else if("reply".equals(action)){
+            reply(request,response);
         }
     }
 
@@ -67,8 +67,22 @@ public class GoodsServlet extends HttpServlet {
             deleteType(request,response);
         }else if("deleteGoods".equals(action)){
             deleteGoods(request,response);
+        }else if("noReplyMsg".equals(action)){
+            noReplyMsg(request,response);
+        }else if("repliedMsg".equals(action)){
+            repliedMsg(request,response);
         }
 
+    }
+
+    private void repliedMsg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<MessageReplyBO> messageList = goodsService.repliedMsg();
+        response.getWriter().println(gson.toJson(Result.ok(messageList)));
+    }
+
+    private void noReplyMsg(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<MessageBO> messageList = goodsService.noReplyMsg();
+        response.getWriter().println(gson.toJson(Result.ok(messageList)));
     }
 
 
@@ -137,17 +151,23 @@ public class GoodsServlet extends HttpServlet {
         response.getWriter().println(gson.toJson(Result.ok()));
     }
 
-
     private void deleteType(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String typeId = request.getParameter("typeId");
         goodsService.deleteTypeByTypeId(typeId);
         response.getWriter().println(gson.toJson(Result.ok()));
     }
 
-
     private void deleteGoods(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String id = request.getParameter("id");
         goodsService.deleteGoodsById(id);
         response.getWriter().println(gson.toJson(Result.ok()));
     }
+
+    private void reply(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestBody = HttpUtils.getRequestBody(request);
+        ContentBO contentBO = gson.fromJson(requestBody, ContentBO.class);
+        goodsService.reply(contentBO);
+        response.getWriter().println(gson.toJson(Result.ok()));
+    }
+
 }

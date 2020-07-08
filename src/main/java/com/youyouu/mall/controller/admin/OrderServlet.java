@@ -1,4 +1,4 @@
-package com.youyouu.mall.controller;
+package com.youyouu.mall.controller.admin;
 
 import com.google.gson.Gson;
 import com.youyouu.mall.model.Result;

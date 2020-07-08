@@ -1,21 +1,12 @@
-package com.youyouu.mall.model.bean;
+package com.youyouu.mall.model.bo.user;
 
-public class User {
-    private Integer id;
+public class UserSignUpBO {
     private String email;
     private String nickname;
     private String pwd;
     private String recipient;
     private String address;
     private String phone;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;
@@ -62,19 +53,6 @@ public class User {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public User() {
-    }
-
-    public User(Integer id, String email, String nickname, String pwd, String recipient, String address, String phone) {
-        this.id = id;
-        this.email = email;
-        this.nickname = nickname;
-        this.pwd = pwd;
-        this.recipient = recipient;
-        this.address = address;
         this.phone = phone;
     }
 }

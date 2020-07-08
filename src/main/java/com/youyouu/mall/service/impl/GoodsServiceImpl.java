@@ -3,6 +3,7 @@ package com.youyouu.mall.service.impl;
 import com.youyouu.mall.dao.GoodsDao;
 import com.youyouu.mall.dao.impl.GoodsDaoImpl;
 import com.youyouu.mall.model.bean.Goods;
+import com.youyouu.mall.model.bean.Message;
 import com.youyouu.mall.model.bean.Spec;
 import com.youyouu.mall.model.bean.Type;
 import com.youyouu.mall.model.bo.goods.GoodsBO;
@@ -11,9 +12,10 @@ import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
 import com.youyouu.mall.model.bo.spec.SpecBO;
 import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
 import com.youyouu.mall.model.bo.type.TypeBO;
-import com.youyouu.mall.model.vo.goods.GoodsVO;
-import com.youyouu.mall.model.vo.goods.GoodsSearchVO;
+import com.youyouu.mall.model.enumaration.MessageState;
+import com.youyouu.mall.model.vo.goods.*;
 import com.youyouu.mall.model.vo.spec.SpecInfoVO;
+import com.youyouu.mall.model.vo.user.UserMessageBO;
 import com.youyouu.mall.service.GoodsService;
 
 import java.util.ArrayList;
@@ -100,11 +102,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public void updateSpecs(List<UpdateSpecBO> specList) {
         for (UpdateSpecBO spec : specList) {
-            if(spec.getId() != null){
-                goodsDao.updateSpec(spec);
-            }else{
-                goodsDao.insertSpec(spec);
-            }
+            goodsDao.updateSpec(spec);
         }
     }
 
@@ -117,4 +115,47 @@ public class GoodsServiceImpl implements GoodsService {
     public void deleteGoodsById(String id) {
         goodsDao.deleteGoodsById(id);
     }
+
+    @Override
+    public List<MessageBO> noReplyMsg() {
+        List<MessageBO> list = new ArrayList<>();
+        List<Message> messageList = goodsDao.getMessageByState(MessageState.NO_REPLY.getCode());
+        for (int i = 0; i < messageList.size(); i++) {
+            Message cur = messageList.get(i);
+            Integer userId = cur.getUserId();
+            String userName = goodsDao.getUserNameByUserId(userId);
+            UserMessageBO user = new UserMessageBO(userName);
+            Integer goodsId = cur.getGoodsId();
+            String goodsName = goodsDao.getGoodsNameByGoodsId(goodsId);
+            GoodsMessageVO goods = new GoodsMessageVO(goodsName);
+            MessageBO message = new MessageBO(cur.getId(), userId, goodsId, cur.getContent(), cur.getState(), goods, user);
+            list.add(message);
+        }
+        return list;
+    }
+
+
+    @Override
+    public List<MessageReplyBO> repliedMsg() {
+        List<MessageReplyBO> list = new ArrayList<>();
+        List<Message> messageList = goodsDao.getMessageByState(MessageState.REPLIED.getCode());
+        for (int i = 0; i < messageList.size(); i++) {
+            Message cur = messageList.get(i);
+            Integer userId = cur.getUserId();
+            String userName = goodsDao.getUserNameByUserId(userId);
+            UserMessageBO user = new UserMessageBO(userName);
+            Integer goodsId = cur.getGoodsId();
+            String goodsName = goodsDao.getGoodsNameByGoodsId(goodsId);
+            GoodsMessageVO goods = new GoodsMessageVO(goodsName);
+            MessageReplyBO messageReplyBO = new MessageReplyBO(cur.getId(),userId,goodsId,cur.getContent(),cur.getReplyContent(),cur.getState(),goods,user);
+            list.add(messageReplyBO);
+        }
+        return list;
+    }
+
+    @Override
+    public void reply(ContentBO contentBO) {
+        goodsDao.reply(contentBO);
+    }
+
 }

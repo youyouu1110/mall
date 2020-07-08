@@ -3,6 +3,9 @@ package com.youyouu.mall.service.impl;
 import com.youyouu.mall.dao.UserDao;
 import com.youyouu.mall.dao.impl.UserDaoImpl;
 import com.youyouu.mall.model.bean.User;
+import com.youyouu.mall.model.bo.user.UserLoginBO;
+import com.youyouu.mall.model.bo.user.UserSignUpBO;
+import com.youyouu.mall.model.vo.user.UserSignUpVO;
 import com.youyouu.mall.service.UserService;
 
 import java.util.List;
@@ -26,5 +29,17 @@ public class UserServiceImpl implements UserService {
         return userDao.searchUserByWord(word);
     }
 
+    @Override
+    public UserSignUpVO signUp(UserSignUpBO userSignUpBO) {
+        userDao.signUp(userSignUpBO);
+        UserSignUpVO user = new UserSignUpVO(0,userSignUpBO.getNickname(),userSignUpBO.getNickname());
+        return user;
+    }
+
+    @Override
+    public User login(UserLoginBO loginBO) {
+        User user = userDao.login(loginBO);
+        return user;
+    }
 
 }

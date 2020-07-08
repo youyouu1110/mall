@@ -1,11 +1,11 @@
 package com.youyouu.mall.dao.impl;
 
 import com.youyouu.mall.dao.GoodsDao;
-import com.youyouu.mall.model.bean.Goods;
-import com.youyouu.mall.model.bean.Spec;
-import com.youyouu.mall.model.bean.Type;
+import com.youyouu.mall.model.bean.*;
 import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
 import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
+import com.youyouu.mall.model.enumaration.MessageState;
+import com.youyouu.mall.model.vo.goods.ContentBO;
 import com.youyouu.mall.model.vo.goods.GoodsVO;
 import com.youyouu.mall.utils.DruidUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -136,16 +136,6 @@ public class GoodsDaoImpl implements GoodsDao {
     }
 
     @Override
-    public void insertSpec(UpdateSpecBO spec) {
-        try {
-            queryRunner.update("insert into spec values(null,?,?,?,?)",
-                    spec.getSpecName(),spec.getStockNum(),spec.getUnitPrice(),spec.getGoodsId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void deleteTypeByTypeId(String typeId) {
         try {
             Goods goods = queryRunner.query("select * from goods where typeId = ?", new BeanHandler<Goods>(Goods.class), typeId);
@@ -168,6 +158,48 @@ public class GoodsDaoImpl implements GoodsDao {
         try {
             queryRunner.update("delete from spec where goodsId = ?",id);
             queryRunner.update("delete from goods where id = ?",id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Message> getMessageByState(Integer i) {
+        List<Message> messageList = null;
+        try {
+            messageList = queryRunner.query("select * from message where state = ?", new BeanListHandler<Message>(Message.class), i);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return messageList;
+    }
+
+    @Override
+    public String getUserNameByUserId(Integer userId) {
+        User user = null;
+        try {
+            user = queryRunner.query("select nickname from user where id = ?", new BeanHandler<User>(User.class), userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user.getNickname();
+    }
+
+    @Override
+    public String getGoodsNameByGoodsId(Integer goodsId) {
+        Goods goods = null;
+        try {
+            goods = queryRunner.query("select name from goods where id = ?", new BeanHandler<Goods>(Goods.class), goodsId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return goods.getName();
+    }
+
+    @Override
+    public void reply(ContentBO contentBO) {
+        try {
+            queryRunner.update("update message set replycontent = ?,state = ? where id = ?",contentBO.getContent(), MessageState.REPLIED.getCode(),contentBO.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }

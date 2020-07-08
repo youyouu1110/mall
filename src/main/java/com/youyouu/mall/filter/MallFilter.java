@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/api/admin/*")
-public class AdminFilter implements Filter {
+@WebFilter("/api/mall/*")
+public class MallFilter implements Filter {
     public void destroy() {
     }
 
@@ -24,7 +24,7 @@ public class AdminFilter implements Filter {
         response.setHeader("Access-Control-Allow-Headers","x-requested-with,Authorization,Content-Type");
         response.setHeader("Access-Control-Allow-Credentials","true");
         String requestURI = request.getRequestURI();
-        if(!request.getMethod().equals("OPTION")){
+        /*if(!request.getMethod().equals("OPTION")){
             if (auth(requestURI)) {
                 Admin admin = (Admin) request.getSession().getAttribute("admin");
                 if (admin == null) {
@@ -32,8 +32,7 @@ public class AdminFilter implements Filter {
                     return;
                 }
             }
-        }
-
+        }*/
         chain.doFilter(req, resp);
     }
 

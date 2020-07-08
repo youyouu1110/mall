@@ -1,4 +1,4 @@
-package com.youyouu.mall.controller;
+package com.youyouu.mall.controller.admin;
 
 import com.google.gson.Gson;
 import com.youyouu.mall.model.Result;
@@ -6,6 +6,7 @@ import com.youyouu.mall.model.bean.Admin;
 import com.youyouu.mall.model.bo.admin.AdminBO;
 import com.youyouu.mall.model.bo.admin.AdminLoginBO;
 
+import com.youyouu.mall.model.bo.admin.AdminLogoutBO;
 import com.youyouu.mall.model.bo.admin.AdminSearchBO;
 
 import com.youyouu.mall.service.AdminService;
@@ -38,8 +39,11 @@ public class AdminServlet extends HttpServlet {
             updateAdmin(request,response);
         }else if("changePwd".equals(action)){
             changePwd(request,response);
+        }else if("logoutAdmin".equals(action)){
+            logout(request,response);
         }
     }
+
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
@@ -58,11 +62,11 @@ public class AdminServlet extends HttpServlet {
         String requestBody = HttpUtils.getRequestBody(request);
         AdminLoginBO loginBo = gson.fromJson(requestBody, AdminLoginBO.class);
         Admin login = adminService.login(loginBo);
-        Result result = new Result();
         if(login != null){
             AdminLoginVO loginVO = new AdminLoginVO();
             loginVO.setToken(login.getNickname());
             loginVO.setName(login.getNickname());
+            request.getSession().setAttribute("admin",login);
             response.getWriter().println(gson.toJson(Result.ok(loginVO)));
         }else{
             response.getWriter().println(gson.toJson(Result.error("用户名或密码错误")));
@@ -121,4 +125,9 @@ public class AdminServlet extends HttpServlet {
         response.getWriter().println(gson.toJson(Result.ok()));
     }
 
+    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestBody = HttpUtils.getRequestBody(request);
+        AdminLogoutBO logoutBO = gson.fromJson(requestBody, AdminLogoutBO.class);
+        response.getWriter().println(gson.toJson(Result.ok()));
+    }
 }

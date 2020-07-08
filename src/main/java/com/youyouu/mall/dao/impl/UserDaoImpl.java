@@ -2,6 +2,9 @@ package com.youyouu.mall.dao.impl;
 
 import com.youyouu.mall.dao.UserDao;
 import com.youyouu.mall.model.bean.User;
+import com.youyouu.mall.model.bo.user.UserLoginBO;
+import com.youyouu.mall.model.bo.user.UserSignUpBO;
+import com.youyouu.mall.model.vo.user.UserSignUpVO;
 import com.youyouu.mall.utils.DruidUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -44,6 +47,28 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
         return userList;
+    }
+
+    @Override
+    public void signUp(UserSignUpBO userSignUpBO) {
+        try {
+            queryRunner.update("insert into user values(null,?,?,?,?,?,?)",
+                    userSignUpBO.getEmail(),userSignUpBO.getNickname(),userSignUpBO.getPwd(),userSignUpBO.getRecipient(),userSignUpBO.getAddress(),userSignUpBO.getPhone());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public User login(UserLoginBO loginBO) {
+        User user = null;
+        try {
+            user = queryRunner.query("select * from user where email = ? and pwd = ?", new BeanHandler<User>(User.class),
+                    loginBO.getEmail(), loginBO.getPwd());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
 

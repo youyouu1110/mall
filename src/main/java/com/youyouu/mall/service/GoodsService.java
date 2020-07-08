@@ -9,8 +9,7 @@ import com.youyouu.mall.model.bo.spec.AddSpecBO;
 import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
 import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
 import com.youyouu.mall.model.bo.type.TypeBO;
-import com.youyouu.mall.model.vo.goods.GoodsVO;
-import com.youyouu.mall.model.vo.goods.GoodsSearchVO;
+import com.youyouu.mall.model.vo.goods.*;
 import com.youyouu.mall.model.vo.spec.SpecInfoVO;
 
 import java.util.List;
@@ -40,4 +39,10 @@ public interface GoodsService {
     void deleteTypeByTypeId(String typeId);
 
     void deleteGoodsById(String id);
+
+    List<MessageBO> noReplyMsg();
+
+    List<MessageReplyBO> repliedMsg();
+
+    void reply(ContentBO contentBO);
 }

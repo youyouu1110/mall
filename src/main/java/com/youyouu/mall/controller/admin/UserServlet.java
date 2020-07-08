@@ -1,4 +1,4 @@
-package com.youyouu.mall.controller;
+package com.youyouu.mall.controller.admin;
 
 import com.google.gson.Gson;
 import com.youyouu.mall.model.Result;
@@ -24,11 +24,7 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         String action = requestURI.replace("/api/admin/admin/", "");
-
-
     }
-
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();

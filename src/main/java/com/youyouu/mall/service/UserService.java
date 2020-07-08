@@ -1,6 +1,10 @@
 package com.youyouu.mall.service;
 
 import com.youyouu.mall.model.bean.User;
+import com.youyouu.mall.model.bo.user.UserLoginBO;
+import com.youyouu.mall.model.bo.user.UserSignUpBO;
+import com.youyouu.mall.model.vo.user.UserSignUpVO;
+
 import java.util.List;
 
 public interface UserService {
@@ -10,4 +14,7 @@ public interface UserService {
 
     List<User> searchUserByWord(String word);
 
+    UserSignUpVO signUp(UserSignUpBO userSignUpBO);
+
+    User login(UserLoginBO userLoginBO);
 }
