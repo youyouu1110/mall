@@ -1,10 +1,9 @@
 package com.youyouu.mall.dao;
 
 
-import com.youyouu.mall.model.bean.Goods;
-import com.youyouu.mall.model.bean.Message;
-import com.youyouu.mall.model.bean.Spec;
-import com.youyouu.mall.model.bean.Type;
+import com.youyouu.mall.model.bean.*;
+import com.youyouu.mall.model.bo.goods.AskGoodsBO;
+import com.youyouu.mall.model.bo.orders.CartItemBO;
 import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
 import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
 import com.youyouu.mall.model.vo.goods.ContentBO;
@@ -46,4 +45,18 @@ public interface GoodsDao {
     String getGoodsNameByGoodsId(Integer goodsId);
 
     void reply(ContentBO contentBO);
+
+    List<Message> getMessagesByGoodsId(String goodsId);
+
+    String getSpecNameBySpecId(Integer specId);
+
+    Integer getUserByToken(String token);
+
+    void askGoodsMsg(Integer userId, AskGoodsBO askGoodsBO);
+
+    List<Question> getQuestionByGoodsId(String id);
+
+    Spec getSpecById(Integer goodsDetailId);
+
+    void settleAccounts(CartItemBO cartItemBO);
 }

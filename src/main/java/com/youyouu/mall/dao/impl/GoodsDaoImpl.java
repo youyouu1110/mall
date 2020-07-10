@@ -2,9 +2,12 @@ package com.youyouu.mall.dao.impl;
 
 import com.youyouu.mall.dao.GoodsDao;
 import com.youyouu.mall.model.bean.*;
+import com.youyouu.mall.model.bo.goods.AskGoodsBO;
+import com.youyouu.mall.model.bo.orders.CartItemBO;
 import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
 import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
 import com.youyouu.mall.model.enumaration.MessageState;
+import com.youyouu.mall.model.enumaration.OrderState;
 import com.youyouu.mall.model.vo.goods.ContentBO;
 import com.youyouu.mall.model.vo.goods.GoodsVO;
 import com.youyouu.mall.utils.DruidUtils;
@@ -15,7 +18,10 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GoodsDaoImpl implements GoodsDao {
 
@@ -34,15 +40,32 @@ public class GoodsDaoImpl implements GoodsDao {
 
     @Override
     public List<GoodsVO> getGoodsByType(String typeId) {
+        Map<String, Object> result = getDynamicSql(typeId);
+        String sql = (String) result.get("sql");
+        List<String> params = (List<String>) result.get("params");
         List<GoodsVO> list = null;
         try {
-            list = queryRunner.query("select id,img,name,price,typeId,stockNum from goods where typeId = ?", new BeanListHandler<GoodsVO>(GoodsVO.class), typeId);
+            list = queryRunner.query(sql, new BeanListHandler<GoodsVO>(GoodsVO.class), params.toArray());
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
 
+    private Map<String,Object> getDynamicSql(String typeId){
+        String base = "select id,img,name,price,typeId,stockNum from goods where 1 = 1 ";
+        Map<String,Object> map = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        if("-1".equals(typeId)){
+
+        }else{
+            base += " and typeId = ?";
+            list.add(typeId);
+        }
+        map.put("sql",base);
+        map.put("params",list);
+        return map;
+    }
     @Override
     public void addGoods(Goods goods) {
         try {
@@ -200,6 +223,82 @@ public class GoodsDaoImpl implements GoodsDao {
     public void reply(ContentBO contentBO) {
         try {
             queryRunner.update("update message set replycontent = ?,state = ? where id = ?",contentBO.getContent(), MessageState.REPLIED.getCode(),contentBO.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Message> getMessagesByGoodsId(String goodsId) {
+        List<Message> messages = null;
+        try {
+            messages = queryRunner.query("select * from message where goodsId = ?", new BeanListHandler<Message>(Message.class), goodsId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return messages;
+    }
+
+    @Override
+    public String getSpecNameBySpecId(Integer specId) {
+        Spec spec = null;
+        try {
+            spec = queryRunner.query("select * from spec where id = ?", new BeanHandler<Spec>(Spec.class), specId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return spec.getSpecName();
+    }
+
+    @Override
+    public Integer getUserByToken(String token) {
+        User user = null;
+        try {
+            user = queryRunner.query("select * from user where nickname = ?", new BeanHandler<User>(User.class), token);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user.getId();
+
+    }
+
+    @Override
+    public void askGoodsMsg(Integer userId, AskGoodsBO askGoodsBO) {
+        try {
+            queryRunner.update("insert into question(goodsId,userId,asker,content) values(?,?,?,?)",
+                    askGoodsBO.getGoodsId(),userId,askGoodsBO.getToken(),askGoodsBO.getMsg());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Question> getQuestionByGoodsId(String id) {
+        List<Question> questionList = null;
+        try {
+            questionList = queryRunner.query("select * from question where goodsId = ?", new BeanListHandler<Question>(Question.class), id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return questionList;
+    }
+
+    @Override
+    public Spec getSpecById(Integer goodsDetailId) {
+        Spec spec = null;
+        try {
+            spec = queryRunner.query("select * from spec where id = ?", new BeanHandler<Spec>(Spec.class), goodsDetailId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return spec;
+    }
+
+    @Override
+    public void settleAccounts(CartItemBO cartItemBO) {
+        try {
+            queryRunner.update("update orders set stateId = ? where id = ?",
+                    OrderState.UN_SHIPED.getCode(),cartItemBO.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }

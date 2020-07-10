@@ -37,13 +37,6 @@ public class OrderServlet extends HttpServlet {
 
     }
 
-    private void changeOrder(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String requestBody = HttpUtils.getRequestBody(request);
-        ChangeOrderBO orderBO = gson.fromJson(requestBody, ChangeOrderBO.class);
-        orderService.changeOrder(orderBO);
-        response.getWriter().println(gson.toJson(Result.ok()));
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         String action = requestURI.replace("/api/admin/order/", "");
@@ -71,6 +64,14 @@ public class OrderServlet extends HttpServlet {
         PageOrderBO orderBO = gson.fromJson(requestBody, PageOrderBO.class);
         PageOrdersVO orders = orderService.ordersByPage(orderBO);
         response.getWriter().println(gson.toJson(Result.ok(orders)));
+    }
+
+
+    private void changeOrder(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestBody = HttpUtils.getRequestBody(request);
+        ChangeOrderBO orderBO = gson.fromJson(requestBody, ChangeOrderBO.class);
+        orderService.changeOrder(orderBO);
+        response.getWriter().println(gson.toJson(Result.ok()));
     }
 
 }

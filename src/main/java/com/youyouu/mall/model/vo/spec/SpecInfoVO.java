@@ -4,7 +4,7 @@ public class SpecInfoVO {
     private Integer id;
     private String specName;
     private Integer stockNum;
-    private double unitPrice;
+    private Double unitPrice;
 
     public Integer getId() {
         return id;
@@ -34,14 +34,14 @@ public class SpecInfoVO {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
     public SpecInfoVO() {
     }
 
-    public SpecInfoVO(Integer id, String specName, Integer stockNum, double unitPrice) {
+    public SpecInfoVO(Integer id, String specName, Integer stockNum, Double unitPrice) {
         this.id = id;
         this.specName = specName;
         this.stockNum = stockNum;

@@ -2,8 +2,13 @@ package com.youyouu.mall.dao.impl;
 
 import com.alibaba.druid.util.StringUtils;
 import com.youyouu.mall.dao.OrderDao;
+import com.youyouu.mall.model.bean.Goods;
 import com.youyouu.mall.model.bean.Orders;
+import com.youyouu.mall.model.bean.Spec;
+import com.youyouu.mall.model.bean.User;
+import com.youyouu.mall.model.bo.message.MessageBO;
 import com.youyouu.mall.model.bo.orders.PageOrderBO;
+import com.youyouu.mall.model.enumaration.OrderState;
 import com.youyouu.mall.model.vo.orders.PageOrderInfoVO;
 import com.youyouu.mall.model.vo.orders.PageOrdersVO;
 import com.youyouu.mall.model.vo.spec.OrderSpecInfoVO;
@@ -94,6 +99,120 @@ public class OrderDaoImpl implements OrderDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Orders> getOrderByStateAndToken(String state, String token) {
+        Map<String,Object> map = getDynamicSql_2(state,token);
+        String sql = (String) map.get("sql");
+        List<String> params = (List<String>) map.get("params");
+        List<Orders> orders = null;
+        try {
+            orders = queryRunner.query(sql, new BeanListHandler<Orders>(Orders.class), params.toArray());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+    @Override
+    public Spec getSpecByIdAndGoodsId(Integer goodsId, Integer goodsDetailId) {
+        Spec spec = null;
+        try {
+            spec = queryRunner.query("select * from spec where id = ? and goodsId = ?", new BeanHandler<Spec>(Spec.class),
+                    goodsDetailId,goodsId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return spec;
+    }
+
+    @Override
+    public Goods getGoodsById(Integer goodsId) {
+        Goods goods  = null;
+        try {
+            goods = queryRunner.query("select * from goods where id = ?", new BeanHandler<Goods>(Goods.class), goodsId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return goods;
+    }
+
+    @Override
+    public void pay(String id) {
+        try {
+            queryRunner.update("update orders set stateId = ? where id = ?", OrderState.UN_SHIPED.getCode(),id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void confirmReceive(String id) {
+        try {
+            queryRunner.update("update orders set stateId = ? where id = ?", OrderState.RECEIVED.getCode(),id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        User user = null;
+        try {
+            user = queryRunner.query("select * from user where nickname = ?", new BeanHandler<User>(User.class), token);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
+    public void sendComment(Integer id, MessageBO messageBO) {
+        try {
+            queryRunner.update("update message set content = ?, score = ? where userId = ? and goodsId = ? and specId = ? and orderId = ?",
+                    messageBO.getContent(),messageBO.getScore(),id,messageBO.getGoodsId(),messageBO.getGoodsDetailId(),messageBO.getOrderId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void changeOrderState(Integer orderId) {
+        try {
+            queryRunner.update("update orders set stateId = ? where id = ?", -1,orderId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addOrder(Orders orders) {
+        try {
+            queryRunner.update("insert into orders(id,userId,nickname,name,address,phone,goods,goodsId,spec,goodsDetailId,num,amount,stateId,hasComment) values(null,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    orders.getUserId(),orders.getNickname(),orders.getName(),orders.getAddress(),orders.getPhone(),orders.getGoods(),orders.getGoodsId(),orders.getSpec(),
+                    orders.getGoodsDetailId(),orders.getNum(),orders.getAmount(),orders.getStateId(),orders.getHasComment());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Map<String, Object> getDynamicSql_2(String state, String token) {
+        String base = "select * from orders where 1 = 1 ";
+        List<String> list = new ArrayList<>();
+        Map<String,Object> map = new HashMap<>();
+        if("-1".equals(state)){
+            base += " and nickname = ?";
+            list.add(token);
+        }
+        if("0".equals(state) || "1".equals(state) || "2".equals(state) || "3".equals(state)){
+            base += " and stateId = ? and nickname = ?";
+            list.add(state);
+            list.add(token);
+        }
+        map.put("sql",base);
+        map.put("params",list);
+        return map;
     }
 
     private Map<String, Object> getDynamicSql(PageOrderBO orderBO) {

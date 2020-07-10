@@ -3,8 +3,11 @@ package com.youyouu.mall.service.impl;
 import com.youyouu.mall.dao.UserDao;
 import com.youyouu.mall.dao.impl.UserDaoImpl;
 import com.youyouu.mall.model.bean.User;
+import com.youyouu.mall.model.bo.user.UpdateUserBO;
 import com.youyouu.mall.model.bo.user.UserLoginBO;
+import com.youyouu.mall.model.bo.user.UserPwdBO;
 import com.youyouu.mall.model.bo.user.UserSignUpBO;
+import com.youyouu.mall.model.vo.user.UserInfoVO;
 import com.youyouu.mall.model.vo.user.UserSignUpVO;
 import com.youyouu.mall.service.UserService;
 
@@ -40,6 +43,28 @@ public class UserServiceImpl implements UserService {
     public User login(UserLoginBO loginBO) {
         User user = userDao.login(loginBO);
         return user;
+    }
+
+    @Override
+    public UserInfoVO getUserByToken(String token) {
+        User user = userDao.getUserByToken(token);
+        UserInfoVO userInfoVO = new UserInfoVO(0,user.getId(),user.getEmail(),user.getNickname(),user.getRecipient(),user.getAddress(),user.getPhone());
+        return userInfoVO;
+    }
+
+    @Override
+    public void updateUser(UpdateUserBO updateUserBO) {
+        userDao.updateUser(updateUserBO);
+    }
+
+    @Override
+    public void updatePwd(UserPwdBO userPwdBO) {
+        userDao.updatePwd(userPwdBO);
+    }
+
+    @Override
+    public User getUserById(Integer id) {
+        return userDao.getUserById(id);
     }
 
 }

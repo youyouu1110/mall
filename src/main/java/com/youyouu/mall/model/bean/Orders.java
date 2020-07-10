@@ -147,4 +147,24 @@ public class Orders {
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
     }
+
+    public Orders() {
+    }
+
+    public Orders(Integer id, Integer userId, String nickname, String name, String address, String phone, String goods, Integer goodsId, String spec, Integer goodsDetailId, Integer num, Double amount, Integer stateId, Integer hasComment) {
+        this.id = id;
+        this.userId = userId;
+        this.nickname = nickname;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.goods = goods;
+        this.goodsId = goodsId;
+        this.spec = spec;
+        this.goodsDetailId = goodsDetailId;
+        this.num = num;
+        this.amount = amount;
+        this.stateId = stateId;
+        this.hasComment = hasComment;
+    }
 }

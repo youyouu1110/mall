@@ -2,10 +2,8 @@ package com.youyouu.mall.service.impl;
 
 import com.youyouu.mall.dao.GoodsDao;
 import com.youyouu.mall.dao.impl.GoodsDaoImpl;
-import com.youyouu.mall.model.bean.Goods;
-import com.youyouu.mall.model.bean.Message;
-import com.youyouu.mall.model.bean.Spec;
-import com.youyouu.mall.model.bean.Type;
+import com.youyouu.mall.model.bean.*;
+import com.youyouu.mall.model.bo.goods.AskGoodsBO;
 import com.youyouu.mall.model.bo.goods.GoodsBO;
 import com.youyouu.mall.model.bo.spec.AddSpecBO;
 import com.youyouu.mall.model.bo.spec.DeleteSpecBO;
@@ -14,10 +12,15 @@ import com.youyouu.mall.model.bo.spec.UpdateSpecBO;
 import com.youyouu.mall.model.bo.type.TypeBO;
 import com.youyouu.mall.model.enumaration.MessageState;
 import com.youyouu.mall.model.vo.goods.*;
+import com.youyouu.mall.model.vo.question.QuestionVO;
+import com.youyouu.mall.model.vo.question.ReplyVO;
 import com.youyouu.mall.model.vo.spec.SpecInfoVO;
+import com.youyouu.mall.model.vo.user.UserFeVO;
 import com.youyouu.mall.model.vo.user.UserMessageBO;
 import com.youyouu.mall.service.GoodsService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,6 +159,44 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public void reply(ContentBO contentBO) {
         goodsDao.reply(contentBO);
+    }
+
+    @Override
+    public GoodsMsgFe getGoodsComment(String goodsId) {
+        List<ContentFeVO> commentList = new ArrayList<>();
+        List<Message> messageList = goodsDao.getMessagesByGoodsId(goodsId);
+        for (Message message : messageList) {
+            String nickname = goodsDao.getUserNameByUserId(message.getUserId());
+            UserFeVO user = new UserFeVO(nickname);
+            String specName = goodsDao.getSpecNameBySpecId(message.getSpecId());
+            ContentFeVO content = new ContentFeVO(user,message.getScore(),message.getId(),specName,message.getContent(),message.getCreatetime(),message.getUserId());
+            commentList.add(content);
+        }
+        double sum = 0;
+        for (int i = 0; i < messageList.size(); i++) {
+            sum += Double.parseDouble(messageList.get(i).getScore());
+        }
+        double rate = sum / messageList.size();
+        GoodsMsgFe goodsMsgFe = new GoodsMsgFe(commentList,rate);
+        return goodsMsgFe;
+    }
+
+    @Override
+    public void askGoodsMsg(AskGoodsBO askGoodsBO) {
+        Integer userId = goodsDao.getUserByToken(askGoodsBO.getToken());
+        goodsDao.askGoodsMsg(userId,askGoodsBO);
+    }
+
+    @Override
+    public List<QuestionVO> getGoodsMsg(String id) {
+        List<QuestionVO> result = new ArrayList<>();
+        List<Question> questionList = goodsDao.getQuestionByGoodsId(id);
+        for (Question question : questionList) {
+            ReplyVO replyVO = new ReplyVO(question.getReply(),question.getUpdatetime());
+            QuestionVO questionVO = new QuestionVO(question.getId(),question.getContent(),question.getAsker(),question.getCreatetime(),replyVO);
+            result.add(questionVO);
+        }
+        return result;
     }
 
 }

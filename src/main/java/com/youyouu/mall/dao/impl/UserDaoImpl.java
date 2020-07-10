@@ -2,7 +2,9 @@ package com.youyouu.mall.dao.impl;
 
 import com.youyouu.mall.dao.UserDao;
 import com.youyouu.mall.model.bean.User;
+import com.youyouu.mall.model.bo.user.UpdateUserBO;
 import com.youyouu.mall.model.bo.user.UserLoginBO;
+import com.youyouu.mall.model.bo.user.UserPwdBO;
 import com.youyouu.mall.model.bo.user.UserSignUpBO;
 import com.youyouu.mall.model.vo.user.UserSignUpVO;
 import com.youyouu.mall.utils.DruidUtils;
@@ -69,6 +71,48 @@ public class UserDaoImpl implements UserDao {
             e.printStackTrace();
         }
         return user;
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        User user = null;
+        try {
+            user = queryRunner.query("select * from user where nickname = ?", new BeanHandler<User>(User.class), token);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
+    public void updateUser(UpdateUserBO updateUserBO) {
+        try {
+            queryRunner.update("update user set nickname = ?, recipient = ?,address = ?,phone = ? where id = ?",
+                    updateUserBO.getNickname(),updateUserBO.getRecipient(),updateUserBO.getAddress(),updateUserBO.getPhone(),updateUserBO.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public User getUserById(Integer id) {
+        User user = null;
+        try {
+            user = queryRunner.query("select * from user where id = ?", new BeanHandler<User>(User.class), id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
+    public void updatePwd(UserPwdBO userPwdBO) {
+        try {
+            queryRunner.update("update user set pwd = ? where id = ?", userPwdBO.getNewPwd(), userPwdBO.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
